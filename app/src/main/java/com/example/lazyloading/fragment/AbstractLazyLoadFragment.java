@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
  */
 public abstract class AbstractLazyLoadFragment extends Fragment {
 
-    private final String TAG = AbstractLazyLoadFragment.class.getSimpleName();
-
     private boolean isViewCreated = false;//布局是否被创建
     private boolean isLoadData = false;//数据是否加载
     private boolean isFirstVisible = true;//是否第一次可见
@@ -44,11 +42,6 @@ public abstract class AbstractLazyLoadFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(TAG, "setUserVisibleHint(): "
-                + " hide: " + this.isHidden()
-                + " add :" + this.isAdded()
-                + " visible: " + this.isVisible()
-                + " resumed: " + this.isResumed());
         if(isFragmentVisible(this) && !isLoadData && isViewCreated && this.isAdded()){
             onLazyLoadData();
             isLoadData = true;
@@ -59,11 +52,6 @@ public abstract class AbstractLazyLoadFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.d(TAG, "onHiddenChanged(): "
-                + " hide: " + this.isHidden()
-                + " add :" + this.isAdded()
-                + " visible: " + this.isVisible()
-                + " resumed: " + this.isResumed());
         //onHiddenChanged调用在Resumed之前，所以此时可能fragment被add, 但还没resumed
         if(!hidden && !this.isResumed())
             return;
